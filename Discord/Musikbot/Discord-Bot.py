@@ -547,4 +547,4 @@ async def commands(ctx):
                    " speichert sie zwischen. Das gesamte Projekt umfasst 855 Zeilen und 6 Dateien. ")
 
 # Runs bot with token.
-bot.run("ODE2NzIzODU0MzE5Mjg4MzYx.YD_HXA.p6kwMVIdqJevcc6hMpyL3NxOBX4")
+bot.run("")
