@@ -10,8 +10,7 @@ async def getLyrics(content):
         content = [content, ""]
 
     # Initiates the Genius-Library
-    genius = lyricsgenius.Genius("MrGdtgaPVJnNSnJ1z3IiOrMhvbhkkG_"
-                                 "FfxKuXzjkamnqE0hp_eJniBHyPCKSTp5YIwNKlnrdYlDZFpSLx57QQ")
+    genius = lyricsgenius.Genius("")
     try:
         song = genius.search_song(title=content[0], artist=content[1])
     except requests.exceptions.Timeout:
