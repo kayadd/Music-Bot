@@ -1,1 +1,85 @@
-Add Documentation soon.
+General information:
+
+This bot was written by me and I have tried to use as few libraries as possible.
+Initially, I tried to only use selenium to webscrape the title, views, duration, upload
+time and the uploader and get the link to download the file and then webscrape another
+site to submit the link and get the direct link to the mp3-file. The initial library to
+download this file was wget, which has worked, but then, after four days, the site blocked me
+for "suspicious reasons". I can only speculate, but I think I could have been banned for trying
+to build an automated service to download files, which could be interpreted as copyright
+infringement or trying to DDOS them though a script. Either way, every major site prohibits
+this and I ultimately used yt-dlp to download the mp3-file.
+
+Every function must be awaited and every major function must be split into blocking parts, because
+discord has a heartbeat, which sends periodic signals to discord to confirm its connection. Every
+function, that was not "awaited" must be awaited. That also means every time it has to wait for
+something, that is not an asyncio function, like the time library and everything that uses the
+time library.
+
+The whole project is structured around six files. Selenium uses chromedriver.exe to access
+Chrome to properly webscrape Chrome via Selenium. The corresponding license can be deleted,
+but I keep it. I also use ffmpeg to process the audio-file in Discord-Bot.py, which is the
+main-file.
+
+genius_lyrics.py:
+
+-get_lyrics(context : str): returns list
+ Used libraries: lyricsgenius, requests.exceptions.
+ Returns a list, that is filled with at least one string. The context must contain
+ the Name of the song and can contain the artist of the song, which has to be separated
+ by a comma. If the song cannot be found by genius, it returns a list with only one entry.
+ If the song can be found, it will separate it into strings with under 2000 characters, so that
+ discord can send them via message.
+
+yDown.py:
+
+-getLink(Input: str): returns list
+ Used libraries: selenium, asyncio.
+ Takes an url as an input and returns, via selenium, the metadata of the given youtube-url.
+ The output should have the link as the first list entry and as the second another list of
+ six, which is containing the meta-data of the video.
+ metadata[1] = [views, duration, time of upload, artist, title].
+
+-downloadFile(url: str): returns str
+ Used libraries: yt-dlp, os.
+ Takes the download-url and downloads as a mp3 file. The returns the file name of the file.
+
+-purgeData(): returns None
+ Used libraries: os.
+ Deletes all files, except the necessary files to run the bot. This method is supposed to
+ clean the files to reduce the memory-use.
+
+-getPlaylistlinks(links: str): returns list
+ Used libraries: selenium.
+ Gets all the links of a playlist, which is given by a video in that playlist.
+
+-getFileDuration(mFile :str): returns str.
+ Used libraries: mutagen.
+ Gets the formatted duration of a mp3.file and returns the formatted time in minutes and seconds.
+
+Discord-Bot.py
+
+ -global variables:
+  listAuthor: int
+  Stores the id of the user, who queued the last list.
+
+  queue: list
+  Stores all songs, that are in the queue in this format: [path, metadata].
+
+  playing: boolean
+  Indicates if the bot is playing a song.
+
+  paused: boolean
+  Indicates if the bot is paused.
+
+  looped: boolean
+  Indicates if the bot is looped.
+
+  current:list
+  Stores the current song in this format: [path, metadata].
+
+  ListQueue: list
+  Stores the urls of the videos, that will be queued.
+
+  EntryQueue: list
+  Stores the past and latest user input, which has not been played by the bot
