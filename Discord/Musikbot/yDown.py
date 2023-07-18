@@ -3,7 +3,6 @@ import asyncio
 
 # Imports the youtube-download-library
 import yt_dlp
-
 # Gets the mp3-duration
 from mutagen.mp3 import MP3
 
@@ -138,6 +137,7 @@ async def getLink(Input: str):
                 #  Formats the views
                 fMeta[-5] = tdata[0]
 
+                # Formats the upload-time
                 try:
                     fMeta[-3] = "vor " + tdata[1].split("#")[0]
 
@@ -196,7 +196,7 @@ async def purgeData():
     OldDir = os.listdir()
     # Sets all file-names, that are essential when starting the bot
     St = ["chromedriver.exe", "Discord-Bot.py", "ffmpeg.exe", "LICENSE.chromedriver", "yDown.py", "__pycache__",
-          "genius_lyrics.py" , ".idea"]
+          "genius_lyrics.py", ".idea", "Stats"]
 
     # Filters all non-essential files and removes them
     for i in range(len(OldDir)):

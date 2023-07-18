@@ -2,6 +2,8 @@
 # noinspection PyUnresolvedReferences
 import os
 
+import Stats.Stats
+
 # Import Discord and all its extensions.
 if True:
     import discord
@@ -13,6 +15,9 @@ from yDown import *
 # Imports the library for getting the lyrics.
 from genius_lyrics import *
 
+# Imports for data
+from Stats.Stats import *
+
 # Gives the bot all permissions to read, write and speak.
 intents = discord.Intents().all()
 
@@ -21,14 +26,21 @@ bot = commands.Bot(command_prefix='§', intents=intents)
 
 # Initiates all global variables.
 if True:
+    # List-Global variables
     listAuthor = 0
+    ListQueue = []
+    ListID = 0
+
+    # Playing variables
     queue = []
     Playing = False
     paused = False
     looped = False
     current = [0, 0]
-    ListQueue = []
+
+    # Entry variables
     EntryQueue = []
+    StatQueue = []
 
 
 @bot.event
@@ -48,7 +60,6 @@ async def on_ready():
 
     # checks every second, if the bot is still playing and if the queue is not empty.
     while True:
-        print(EntryQueue)
         try:
             # Gets the channel, in which the bot is playing and all its members. If it is not all
             Members = bot.voice_clients[0].channel.members
@@ -93,6 +104,8 @@ async def on_message(message):
     global listAuthor
     global looped
     global ListQueue
+    global StatQueue
+    global ListID
 
     # Makes the message also available for comments.
     await bot.process_commands(message)
@@ -109,6 +122,7 @@ async def on_message(message):
         # gets the id from the user, who sent the message containing the playlist.
         try:
             listAuthor = message.author.voice.channel.id
+            ListID = message.author.id
 
             # Sends info about the playlist being downloaded and played.
             await bot.get_channel(1090764939226009630).send("Die Lieder werden der Queue hinzugefügt. "
@@ -143,6 +157,9 @@ async def on_message(message):
             # Appends the info to the Song-queue
             EntryQueue.append(nlink[1][-1])
 
+            # Appends the info to the StatQueue
+            StatQueue.append([nlink[0], nlink[1][-1], ListID, nlink[1][-2]])
+
             await bot.get_channel(1090764939226009630).send(f">>> {nlink[1][-1]} ist zur Queue hinzugefügt worden.")
 
             del ListQueue[0]
@@ -153,6 +170,7 @@ async def on_message(message):
         except IndexError:
             await bot.change_presence(activity=discord.Game(name=""))
             print(ListQueue)
+            listAuthor = 0
             if not ListQueue:
                 await bot.get_channel(1090764939226009630).send("Die Queue wurde aktualisiert. "
                                                                 "Du kannst jetzt wieder etwas hinzufügen.")
@@ -185,6 +203,7 @@ async def p(ctx, *args):
     global listAuthor
     global current
     global EntryQueue
+    global StatQueue
 
     # Concatenates the arguments to a single string.
     arguments = " ".join(args).replace("&list=", "")
@@ -206,7 +225,7 @@ async def p(ctx, *args):
     if vc is not None:
         await bot.change_presence(activity=discord.Game(name="Suche den Song..."))
 
-        # If the song is not a mp3-file and already downloaded.
+        # If the song is not a mp3-file and already downloaded, download it.
         if "[" not in arguments and "]" not in arguments:
             # Catches a connection error and prints a corresponding message
             try:
@@ -214,6 +233,15 @@ async def p(ctx, *args):
                 link = await getLink(arguments)
                 # Gets the file and passes on the file name.
                 src = await DownloadFile(link[0])
+
+                # Add to StatQueue
+                if ListID != 0:
+                    ID = ListID
+                else:
+                    ID = ctx.author.id
+
+                StatQueue.append([link[0], link[1][-1], ID, link[1][-2]])
+
             except IndexError:
                 await bot.get_channel(1090764939226009630).send("Es ist ein Fehler mit der Verbindung aufgetreten. "
                                                                 "Bitte versuche es erneut.")
@@ -242,7 +270,7 @@ async def p(ctx, *args):
         else:
             c = 0
 
-        # Checks if the bot is already playing a song.
+        # Checks if the bot is already playing a song or has already some in the queue
         if Playing and link != 0:
 
             # If the bot is already playing a song, append it to the queue and confirm it in a channel.
@@ -256,6 +284,13 @@ async def p(ctx, *args):
 
             # Plays the file from ffmpeg.
             c.play(discord.FFmpegPCMAudio(src, executable="ffmpeg.exe"))
+
+            # Adds the stats to the bot
+            print(StatQueue)
+            d = StatQueue[0]
+            await addSong(d[0], d[1], str(d[2]), d[3])
+
+            del StatQueue[0]
 
             # Changing the status of the bot.
             Playing = True
@@ -290,9 +325,8 @@ async def p(ctx, *args):
             if current[1][-1] == link[1][-1]:
                 Playing = False
 
-            # Deletes the entry, even if the queue is empty
-            if len(queue) == 0:
-                del EntryQueue[0]
+            # Deletes the entry
+            del EntryQueue[0]
 
             # If the song is not in a loop delete the mp3-file.
             if not looped:
@@ -519,6 +553,30 @@ async def info(ctx):
 
 
 @bot.command()
+async def stats(ctx, *args):
+    arguments = " ".join(args)
+
+    try:
+        ID = 0
+        if arguments != "":
+            user_id = bot.guilds[2].members
+            for i in range(len(user_id)):
+                if user_id[i].name == arguments or user_id[i].global_name == arguments:
+                    print("1")
+                    ID = user_id[i].id
+        else:
+            ID = 0
+
+        text = await Stats.Stats.displayData(str(ID), arguments)
+
+        for i in range(len(text)):
+            await ctx.send(text[i])
+
+    except ValueError:
+        await ctx.send("Diesen User gibt es nicht.")
+
+
+@bot.command()
 async def commands(ctx):
     """Prints a list of all commands, which are highlighted in the message, to the corresponding discord-channel."""
 
@@ -550,12 +608,16 @@ async def commands(ctx):
                    "Diese Suche bezieht sich auf die Eingabe des Nutzers. Ist der Titel des Videos oder die Eingabe "
                    "zu verschieden zu dem Songtitel oder es ist kein Song auf Genius dazu vorhanden, wird ein Fehler "
                    "ausgegeben. Bei ungenauer Suche wird empfohlen die reguläre Suchfunktion zu verwenden.\n"
-                   "Gibt die Titel und die Interpreten der Songs aus, die noch in der Queue sind: **qinfo** \n")
+                   "Gibt die Titel und die Interpreten der Songs aus, die noch in der Queue sind: **qinfo** \n"
+                   "Gibt die auf dem Bot gespielten Lieder und wie oft sie angespielt wurden ab dem 18.07.2023 aus:"
+                   "**stats** \n"
+                   "Gibt die auf dem Bot gespielten Lieder und wie oft sie angespielt wurden von einem bestimmten User "
+                   "ab dem 18.07.2023 aus: **stats {Discord-Name}** ")
     await ctx.send("Zusatzinformationen: \n"
                    ">>> Der Bot wurde unter Nutzung der Module mutagen, selenium, yt-dlp, asyncio, discord, genius "
                    "und OS in 5 Tagen in Python mit PyCharm erstellt und lädt alle Songs oder "
                    "Videos automatisch herunter und speichert sie zwischen. Das gesamte Projekt umfasst"
-                   " 829 Zeilen und 6 Dateien. Link zum kompletten Code: https://github.com/kayadd/Music-Bot \n"
+                   " 1049 Zeilen und 9 Dateien. Link zum kompletten Code: https://github.com/kayadd/Music-Bot \n"
                    "Das Repository ist bisher privat, wird aber bald geändert.")
 
 # Runs bot with token.
