@@ -189,10 +189,6 @@ async def p(ctx, *args):
     # Concatenates the arguments to a single string.
     arguments = " ".join(args).replace("&list=", "")
 
-    # Saves the entry
-    if "[" not in arguments:
-        EntryQueue.append(arguments)
-
     # Gets the channel, from the author of the message, in which it should join.
     try:
         vc = bot.get_channel(ctx.author.voice.channel.id)
@@ -230,6 +226,13 @@ async def p(ctx, *args):
             print(src)
             # Extracts the meta-data from the message
             link = [0, eval(arguments[len(src) + 10:len(arguments) - 1])]
+
+        # Saves the entry
+        if "[" not in arguments:
+            if "https://www.youtube.com/watch" in arguments:
+                EntryQueue.append(link[1][-1])
+            else:
+                EntryQueue.append(arguments)
 
         # Connects the bot to the corresponding channel, if necessary.
         if ctx.guild.voice_client is None and link != 0:
@@ -542,8 +545,11 @@ async def commands(ctx):
                    "Entpausiere: **resume**\n"
                    "Gibt den Titel, Dauer, Views, Interpret, Uploaddatum und Loopstatus aus: **info** \n"
                    "Gebe die Lyrics eines Liedes aus: **Lyrics {Songtitel, Interpret}**\n"
-                   "Gibt die Lyrics des aktuellen Liedes aus: **Lyrics .playing** \n"
                    "Dabei ist der Interpret optional; es können also Interpret und das Komma weggelassen werden.\n"
+                   "Gibt die Lyrics des aktuellen Liedes aus: **Lyrics .playing** \n"
+                   "Diese Suche bezieht sich auf die Eingabe des Nutzers. Ist der Titel des Videos oder die Eingabe "
+                   "zu verschieden zu dem Songtitel oder es ist kein Song auf Genius dazu vorhanden, wird ein Fehler "
+                   "ausgegeben. Bei ungenauer Suche wird empfohlen die reguläre Suchfunktion zu verwenden.\n"
                    "Gibt die Titel und die Interpreten der Songs aus, die noch in der Queue sind: **qinfo** \n")
     await ctx.send("Zusatzinformationen: \n"
                    ">>> Der Bot wurde unter Nutzung der Module mutagen, selenium, yt-dlp, asyncio, discord, genius "
