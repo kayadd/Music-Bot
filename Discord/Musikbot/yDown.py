@@ -196,7 +196,7 @@ async def purgeData():
     OldDir = os.listdir()
     # Sets all file-names, that are essential when starting the bot
     St = ["chromedriver.exe", "Discord-Bot.py", "ffmpeg.exe", "LICENSE.chromedriver", "yDown.py", "__pycache__",
-          "genius_lyrics.py"]
+          "genius_lyrics.py" , ".idea"]
 
     # Filters all non-essential files and removes them
     for i in range(len(OldDir)):
