@@ -138,8 +138,11 @@ async def getLink(Input: str):
                 #  Formats the views
                 fMeta[-5] = tdata[0]
 
-                # Formats the upload-time
-                fMeta[-3] = "vor " + tdata[1]
+                try:
+                    fMeta[-3] = "vor " + tdata[1].split("#")[0]
+
+                except IndexError:
+                    fMeta[-3] = "vor " + tdata[1]
 
             except IndexError:
                 pass
