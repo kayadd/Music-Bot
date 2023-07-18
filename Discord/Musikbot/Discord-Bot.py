@@ -553,8 +553,10 @@ async def commands(ctx):
                    "Gibt die Titel und die Interpreten der Songs aus, die noch in der Queue sind: **qinfo** \n")
     await ctx.send("Zusatzinformationen: \n"
                    ">>> Der Bot wurde unter Nutzung der Module mutagen, selenium, yt-dlp, asyncio, discord, genius "
-                   "und OS in 5 Tagen in Python erstellt und lädt alle Songs oder Videos automatisch herunter und"
-                   " speichert sie zwischen. Das gesamte Projekt umfasst 828 Zeilen und 6 Dateien. ")
+                   "und OS in 5 Tagen in Python mit PyCharm erstellt und lädt alle Songs oder "
+                   "Videos automatisch herunter und speichert sie zwischen. Das gesamte Projekt umfasst"
+                   " 829 Zeilen und 6 Dateien. Link zum kompletten Code: https://github.com/kayadd/Music-Bot \n"
+                   "Das Repository ist bisher privat, wird aber bald geändert.")
 
 # Runs bot with token.
 bot.run("")
