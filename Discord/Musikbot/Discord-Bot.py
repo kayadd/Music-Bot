@@ -554,7 +554,7 @@ async def commands(ctx):
     await ctx.send("Zusatzinformationen: \n"
                    ">>> Der Bot wurde unter Nutzung der Module mutagen, selenium, yt-dlp, asyncio, discord, genius "
                    "und OS in 5 Tagen in Python erstellt und lädt alle Songs oder Videos automatisch herunter und"
-                   " speichert sie zwischen. Das gesamte Projekt umfasst 855 Zeilen und 6 Dateien. ")
+                   " speichert sie zwischen. Das gesamte Projekt umfasst 828 Zeilen und 6 Dateien. ")
 
 # Runs bot with token.
 bot.run("")
