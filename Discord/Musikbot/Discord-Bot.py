@@ -287,6 +287,10 @@ async def p(ctx, *args):
             if current[1][-1] == link[1][-1]:
                 Playing = False
 
+            # Deletes the entry, even if the queue is empty
+            if len(queue) == 0:
+                del EntryQueue[0]
+
             # If the song is not in a loop delete the mp3-file.
             if not looped:
                 # Try to remove the file, if it is not being accessed by another process
