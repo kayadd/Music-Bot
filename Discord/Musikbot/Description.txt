@@ -57,6 +57,13 @@ yDown.py:
  Used libraries: mutagen.
  Gets the formatted duration of a mp3.file and returns the formatted time in minutes and seconds.
 
+Stats.py
+-addSong(name: str, link: str, user_id: str, artist: str) returns None
+ Adds the songs to the corresponding files.
+
+-displayData(user_id: str, name: str) returns list
+ gets the top-alltime entries and returns them in bites of length less than 2000 characters.
+
 Discord-Bot.py
 
  -global variables:
@@ -83,3 +90,6 @@ Discord-Bot.py
 
   EntryQueue: list
   Stores the past and latest user input, which has not been played by the bot
+
+  DataQueue: list
+  Stores all playing entries for the data-safe

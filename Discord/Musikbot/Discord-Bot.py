@@ -609,13 +609,22 @@ async def commands(ctx):
                    "Gibt die auf dem Bot gespielten Lieder und wie oft sie angespielt wurden ab dem 18.07.2023 aus:"
                    "**stats** \n"
                    "Gibt die auf dem Bot gespielten Lieder und wie oft sie angespielt wurden von einem bestimmten User "
-                   "ab dem 18.07.2023 aus: **stats {Discord-Name}** ")
+                   "ab dem 18.07.2023 aus: **stats {Discord-Name}** \n"
+                   "Dabei werden maximal 20 Songs aus dem All-Time-Verlauf angezeigt. \n"
+                   "Für mehr Infos über den Bot und seine Funktionsweise: **moreinfos**")
+
+
+@bot.command()
+async def moreinfos(ctx):
     await ctx.send("Zusatzinformationen: \n"
-                   ">>> Der Bot wurde unter Nutzung der Module mutagen, selenium, yt-dlp, asyncio, discord, genius "
+                   ">>> Bei beiden Optionen haben die Nutzer zur Speicherung und Verarbeitung der Daten, in dem Falle "
+                   "des Musikverlaufes, durch den Bot zugestimmt. \n"
+                   "Der Bot wurde unter Nutzung der Module mutagen, selenium, yt-dlp, asyncio, discord, genius "
                    "und OS in 5 Tagen in Python mit PyCharm erstellt und lädt alle Songs oder "
                    "Videos automatisch herunter und speichert sie zwischen. Das gesamte Projekt umfasst"
-                   " 1049 Zeilen und 9 Dateien. Link zum kompletten Code: https://github.com/kayadd/Music-Bot \n"
+                   " 1062 Zeilen und 9 Dateien. Link zum kompletten Code: https://github.com/kayadd/Music-Bot \n"
                    "Das Repository ist bisher privat, wird aber bald geändert.")
+
 
 # Runs bot with token.
 bot.run("")

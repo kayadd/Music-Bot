@@ -4,14 +4,14 @@ import os
 
 
 async def addSong(name: str, link: str, user_id: str, artist: str):
-    """Adds the song to the database"""
+    """Adds the song to the database."""
     user_file = ".//Stats//User-Stats//"+user_id+".txt"
 
     # Writes to user file.
 
     path = os.listdir(".//Stats//User-Stats")
 
-    # Creates the file, if not existing
+    # Creates the file, if not existing.
     if user_id+".txt" not in path:
         wFile = open(user_file, "w")
         wFile.close()
@@ -28,7 +28,6 @@ async def addSong(name: str, link: str, user_id: str, artist: str):
         if link in text[count]:
             changed = True
             temp = int(text[count].split(",")[2])+1
-            print(temp)
             text[count] = f"{name},{link},{temp},{artist}"
 
     if not changed:
@@ -44,8 +43,6 @@ async def addSong(name: str, link: str, user_id: str, artist: str):
     wFile = open(".//Stats//Songs.txt", "r")
     text = wFile.readlines()
 
-    print(text)
-
     wFile.close()
 
     changed = False
@@ -59,8 +56,6 @@ async def addSong(name: str, link: str, user_id: str, artist: str):
 
     if not changed:
         text.append(f"{name},{link},1,{artist}")
-
-    print(text)
 
     # Write in that file.
     wFile = open(".//Stats//Songs.txt", "w")
@@ -77,8 +72,6 @@ async def displayData(user_id: str, name):
         file = ".//Stats//Songs.txt"
         name = "Everyone"
 
-    print(file)
-
     try:
         tfile = open(file, "r")
 
@@ -86,6 +79,24 @@ async def displayData(user_id: str, name):
         return ["Der User hat bisher keinen Song abgespielt."]
 
     data = tfile.readlines()
+
+    Sorted = []
+    GElem = 0
+
+    Sorted = []
+    GElem = "a,a,0"
+
+    for i0 in range(len(data)):
+        for i1 in range(len(data)):
+            if int(data[i0].split(",")[2]) >= int(GElem.split(",")[2]):
+                if GElem not in Sorted:
+                    print(GElem)
+                    GElem = data[i0]
+
+        Sorted.append(GElem)
+        GElem = "a,a,0"
+
+    Sorted = data
 
     if len(data) > 20:
         length = 20
@@ -95,9 +106,9 @@ async def displayData(user_id: str, name):
     text = [f"{name} - All time stats:"]
 
     for i in range(length):
-        data[i] = data[i].replace("\n", "")
-        song = data[i].split(",")
-        text.append(f"{i+1}: {song[1]} vom {song[3]}- Gespielt: {song[2]}")
+        Sorted[i] = Sorted[i].replace("\n", "")
+        song = Sorted[i].split(",")
+        text.append(f"{i + 1}: {song[1]} vom {song[3]}- Gespielt: {song[2]}")
 
     # Reused from genius_lyrics
     bits = []

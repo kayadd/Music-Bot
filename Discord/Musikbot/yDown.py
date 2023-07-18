@@ -158,7 +158,7 @@ async def getLink(Input: str):
 
 
 async def DownloadFile(Input: str):
-    """Downloads the file of a given youtube-link yt-dlp """
+    """Downloads the file of a given youtube-link yt-dlp."""
     ODir = os.listdir()
 
     ydl_opts = {
@@ -191,7 +191,7 @@ async def DownloadFile(Input: str):
 
 
 async def purgeData():
-    """Removes all unnecessary files from the directory"""
+    """Removes all unnecessary files from the directory."""
     # Loads all files from this directory
     OldDir = os.listdir()
     # Sets all file-names, that are essential when starting the bot
@@ -205,7 +205,7 @@ async def purgeData():
 
 
 async def getPlaylistLinks(link: str):
-    """Gets all links from a youtube-playlist"""
+    """Gets all links from a youtube-playlist."""
     playList = []
     # Opens the website of the playlist
     driver = webdriver.Chrome()
@@ -226,7 +226,7 @@ async def getPlaylistLinks(link: str):
 
 
 async def getFileDuration(mFile):
-    """Calculates the number of seconds of a file-length in Minutes, Seconds and returns a string"""
+    """Calculates the number of seconds of a file-length in Minutes, Seconds and returns a string."""
     audio = MP3(mFile)
     a = (int(audio.info.length) + 1)
 
