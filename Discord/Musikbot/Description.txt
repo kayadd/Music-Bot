@@ -16,10 +16,15 @@ function, that was not "awaited" must be awaited. That also means every time it 
 something, that is not an asyncio function, like the time library and everything that uses the
 time library.
 
-The whole project is structured around six files. Selenium uses chromedriver.exe to access
+The whole project is structured around nine files. Selenium uses chromedriver.exe to access
 Chrome to properly webscrape Chrome via Selenium. The corresponding license can be deleted,
 but I keep it. I also use ffmpeg to process the audio-file in Discord-Bot.py, which is the
 main-file.
+
+The bot can add playlists to a queue, pause, resume, skip specific parts of the queue or this song, print out Lyrics of any song or the
+song that is currently playing, Get and display user-stats, play musk from youtube from a link or key words and automatically disconnects
+from the channel if all users have left. The use is intended to be only one server. Some code, like the user-data-display oe the 
+automatically-leaving will not work on both servers.
 
 genius_lyrics.py:
 
