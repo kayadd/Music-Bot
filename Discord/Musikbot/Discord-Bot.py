@@ -605,8 +605,8 @@ async def commands(ctx):
                    "Diese Suche bezieht sich auf die Eingabe des Nutzers. Ist der Titel des Videos oder die Eingabe "
                    "zu verschieden zu dem Songtitel oder es ist kein Song auf Genius dazu vorhanden, wird ein Fehler "
                    "ausgegeben. Bei ungenauer Suche wird empfohlen die reguläre Suchfunktion zu verwenden.\n"
-                   "Gibt die Titel und die Interpreten der Songs aus, die noch in der Queue sind: **qinfo** \n"
-                   "Gibt die auf dem Bot gespielten Lieder und wie oft sie angespielt wurden ab dem 18.07.2023 aus:"
+                   "Gibt die Titel und die Interpreten der Songs aus, die noch in der Queue sind: **qinfo** \n")
+    await ctx.send("Gibt die auf dem Bot gespielten Lieder und wie oft sie angespielt wurden ab dem 18.07.2023 aus:"
                    "**stats** \n"
                    "Gibt die auf dem Bot gespielten Lieder und wie oft sie angespielt wurden von einem bestimmten User "
                    "ab dem 18.07.2023 aus: **stats {Discord-Name}** \n"
