@@ -86,22 +86,18 @@ async def displayData(user_id: str, name):
     Sorted = []
     GElem = "a,a,0"
 
-    for i0 in range(len(data)):
+       for i0 in range(len(data)):
         for i1 in range(len(data)):
-            if int(data[i0].split(",")[2]) >= int(GElem.split(",")[2]):
-                if GElem not in Sorted:
-                    print(GElem)
-                    GElem = data[i0]
+            if int(GElem.split(",")[2]) <= int(data[i1].split(",")[2]) and data[i1] not in Sorted:
+                GElem = data[i1]
 
         Sorted.append(GElem)
         GElem = "a,a,0"
 
-    Sorted = data
-
-    if len(data) > 20:
+    if len(Sorted) > 20:
         length = 20
     else:
-        length = len(data)
+        length = len(Sorted)
 
     text = [f"{name} - All time stats:"]
 
