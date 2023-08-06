@@ -285,10 +285,13 @@ async def p(ctx, *args):
             # Plays the file from ffmpeg.
             c.play(discord.FFmpegPCMAudio(src, executable="ffmpeg.exe"))
 
-            # Adds the stats to the bot
-            print(StatQueue)
-            d = StatQueue[0]
-            await addSong(d[0], d[1], str(d[2]), d[3])
+            # Adds the stats to the bot.
+            try:
+                print(StatQueue)
+                d = StatQueue[0]
+                await addSong(d[0], d[1], str(d[2]), d[3])
+            except:
+                pass
 
             del StatQueue[0]
 
