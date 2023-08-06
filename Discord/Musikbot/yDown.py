@@ -186,8 +186,14 @@ async def DownloadFile(Input: str):
             NewName = NewDir[i].replace(NewDir[i][F:L+1], "")
             NewName = NewName.replace(",", " &")
 
-            os.rename(NewDir[i], NewName)
-            return NewName
+            # Saves duplicate files accordingly.
+            k = 0
+            while True:
+                try:
+                    os.rename(NewDir[i], NewName.replace(".mp3", f"({k}).mp3"))
+                    return NewName.replace(".mp3", f"({k}).mp3")
+                except FileExistsError:
+                    k += 1
 
 
 async def purgeData():
